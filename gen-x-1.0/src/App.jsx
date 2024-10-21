@@ -1,15 +1,11 @@
-// import { useState } from 'react'
-// import reactLogo from './assets/react.svg'
-// import viteLogo from '/vite.svg'
-// import './App.css'
+import MainPageComponent from "./Components/MainPageComponent/MainPageComponents"
 
 function App() {
 
 
   return (
     <>
-  <h1>hello</h1>
-  <a href="#" class="text-decoration-none">This link has its text decoration removed</a>
+      <MainPageComponent/>
     </>
   )
 }
