@@ -1,0 +1,85 @@
+// import Form from './Components/EKart/Form';
+
+// import Display from './Components/EKart/Display';
+
+import Tform from "./Components/EKart/TForm"
+import UserInfoPage from "./Components/EKart/UserInfo"
+
+function App() {
+  const [products, setProducts] = useState([]);
+  const [editingProduct, setEditingProduct] = useState(null);
+
+  // Load products from localStorage on initial load
+  useEffect(() => {
+    const savedProducts = JSON.parse(localStorage.getItem('products')) || [];
+    setProducts(savedProducts);
+  }, []);
+
+  // Save products to localStorage whenever products change
+  useEffect(() => {
+    localStorage.setItem('products', JSON.stringify(products));
+  }, [products]);
+
+  const addOrUpdateProduct = (product) => {
+    if (editingProduct) {
+      // Update existing product
+      const updatedProducts = products.map(p => 
+        // (p.id === editingProduct.id ? product : p)
+        {
+
+          if (p.id === editingProduct.id) {
+            console.log("@@@ product" , product);
+            
+            return product
+          }
+          else{
+            console.log("@@@ product with p" , p);
+            return p
+          }
+        }
+      );
+      setProducts(updatedProducts);
+    } else {
+      // Add new product with a unique ID
+      setProducts([...products, { ...product, id: Date.now() }]);
+    }
+    setEditingProduct(null);
+  };
+
+  const deleteProduct = (id) => {
+    const updatedProducts = products.filter(product => product.id !== id);
+    setProducts(updatedProducts);
+  };
+
+  const editProduct = (product) => {
+    setEditingProduct(product);
+  };
+
+  return (
+    <Router>
+      <Routes>
+        <Route
+          path="/"
+          element={
+            <Form
+              onSubmit={addOrUpdateProduct}
+              initialData={editingProduct}
+            />
+          }
+        />
+        <Route
+          path="/display"
+          element={
+            <Display
+              products={products}
+              onDelete={deleteProduct}
+              onEdit={editProduct}
+            />
+          }
+        />
+      </Routes>
+    </Router>
+  );
+}
+
+export default App;

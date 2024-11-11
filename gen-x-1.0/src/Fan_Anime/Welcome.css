@@ -1,0 +1,18 @@
+.welcomeCard{
+    width: 100vw;
+    height: 100vh;
+    background-color: red;
+    display: flex;
+    flex-direction: column;
+    justify-content:center;
+    align-items: center;
+    justify-items: center;
+    align-content: center;
+    gap: 25px;
+}
+
+.Welcome{
+    font-size: large;
+    font-weight: bolder;
+    color: rgb(0, 0, 0);
+}

@@ -1,71 +1,92 @@
-import { BrowserRouter, Route, Routes } from "react-router-dom"
-import MainPageComponent from "./Components/MainPageComponent/MainPageComponents"
-import TodoCard from "./Components/PagesComponents/TodoPage"
-import DigitalCard from "./Components/PagesComponents/DigitalWatch"
-import Navbar from "./Components/NavigationComponent/NavBar"
-import LoadingSpinner from "./Components/LoadingComponent/LoadingSpinner"
-import {  useEffect, useState } from "react"
 
-import { isEnable } from "../src/Components/GlobalComponents"
-import Footer from "./Components/Footer"
-import store from './Components/Redux/Store.jsx'
-import { Provider } from "react-redux"
-import Counter from "./Components/Redux/Counter.jsx"
-import { ThemeProvider } from "./Components/ContextComp/ThemeContext.jsx"
-import Home from "./Components/Home.jsx"
-import { TextChangerProvider } from "./Components/ContextComp/TextChanger.jsx"
-import IsTextStyleChanged from "./Components/IsTextChange.jsx"
-import EncryptPage from "./Components/PasswordIsEncrypt.jsx"
-import { TextEncryptProvider } from "./Components/ContextComp/textEncrypt.jsx"
-
-// import SignUp from "./Components/SignUpComponents/SignUp"
-
-// import LoginCom from "./Components/LoginComponent/Login"
-
-// import AuthDetailComp from "./Components/AuthDetailsComponent/AuthDetail"
-
-
+import React, { useState, useEffect, useContext } from 'react';
+import CustNormalButton from './Components/SmallComponents/NormalButtonComp';
+import { LoadingContext } from "./Components/ContextComp/isLoadingCreateContext";
+import "./App.css"
+import Loading from './Fan_Anime/Loading';
+import Welcome from './Fan_Anime/WelcomePage';
+import { Routes, Route, useNavigate } from 'react-router-dom';
+import InitialMainPage from './Components/InitialMainPage';
 
 function App() {
-  // const globalDataRead = isEnable()
+  const [getUserData, setGetUserData] = useState([]);
+  const [editingUserDetails, setEditingUserDetails] = useState(null);
+  const {isLoading} = useContext(LoadingContext)
+  console.log("@@@ isLoading app" , isLoading );
+  
+  // Load products from localStorage on initial load
+  useEffect(() => {
+    const savedUserDetails = JSON.parse(localStorage.getItem('getUserData')) || [];
+    setGetUserData(savedUserDetails);
+  }, []);
 
-  // const [isLoading , setIsloading] = useState(true)
-  //   useEffect(() => {
-      
-  //  setTimeout(() => {
-  //   console.log("after 2 seconds");
-    
-  //   setIsloading(false)
-  // }, 2000);
-  // } ,[]);
+  // Save products to localStorage whenever products change
+  useEffect(() => {
+    localStorage.setItem('getUserData', JSON.stringify(getUserData));
+  }, [getUserData]);
+
+  const addOrUpdateProduct = (userDetail) => {
+    if (editingUserDetails) {
+      // Update existing product
+      const updatedProducts = getUserData.map(p => 
+        // (p.id === editingProduct.id ? product : p)
+        {
+
+          if (p.id === getUserData.id) {
+            console.log("@@@ userDetail" , userDetail);
+            
+            return userDetail
+          }
+          else{
+            console.log("@@@ product with p" , p);
+            return p
+          }
+        }
+      );
+      setGetUserData(updatedProducts);
+    } else {
+      // Add new product with a unique ID
+      setGetUserData([...getUserData, { ...userDetail, id: Date.now() }]);
+    }
+    setEditingUserDetails(null);
+  };
+
+  const deleteProduct = (id) => {
+    const updatedProducts = getUserData.filter(product => product.id !== id);
+    setGetUserData(updatedProducts);
+  };
+
+  const editProduct = (product) => {
+    setEditingUserDetails(product);
+  };
+
+
   return (
+    
     <>
-    {/* <h1>Firebase Authentication </h1> */}
-    {/* <SignUp/> */}
-    {/* <LoginCom/> */}
-    {/* <AuthDetailComp/> */}
-      {/* <MainPageComponent/> */}
-      
-      {/* <LoadingSpinner/> */}
-     
-      {/* <Navbar />
-      
-      <BrowserRouter>
-     <Routes>
-        <Route path="/" element={<MainPageComponent name={"hello"}/>} />
-        <Route path="/todo" element={<TodoCard />} />
-        <Route path="/digi" element={<DigitalCard />} />
-     </Routes>
-     </BrowserRouter> */}
-     {/* {globalDataRead.footer ? ( <Footer /> ) : "" } */}
 
   
-     {/* {isLoading ? console.log("loading started") : `loading completed ${globalDataRead.loading } , ${globalDataRead.dark}`} */}
-<TextEncryptProvider>
-  <EncryptPage/>
-</TextEncryptProvider>
+      <div className='AppMainCardComp'>
+
+      {
+        isLoading === false ?
+      ( <>
+      < CustNormalButton />
+      <Welcome/>
+      </>   ) : ( <Loading isLoading={isLoading}/> )
+      }
+      </div>
+      
+      {/* <Routes>
+      <Route
+          path="/main"
+          element={
+           <InitialMainPage />
+          }
+        />
+         </Routes> */}
     </>
-  )
+  );
 }
 
-export default App
+export default App;

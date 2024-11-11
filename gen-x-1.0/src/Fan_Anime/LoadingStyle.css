@@ -1,0 +1,69 @@
+.mainComponent{
+    width: 100vw;
+    height: 100%vh;
+    background-color: red;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    align-content: center;
+    justify-items: center;
+}
+
+.CardComponent{
+    /* overflow: hidden; */
+    width: 150px;
+    height: 150px;
+    background-color: rgb(19, 11, 11);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+     align-items: center;
+    align-content: center;
+    justify-items: center;
+    padding: 10px;
+    text-align: center;
+    animation-name: loadingIcon;
+    animation-duration: 4s;
+    animation-timing-function: ease;
+    border: 2px solid black;
+    animation-fill-mode: forwards;
+    animation-iteration-count: infinite;
+    
+}
+
+ @keyframes loadingIcon {
+    0%{
+        /* here  position , top, left , due to transform: translateY(200%); , to avoid scroll effect*/
+        position: fixed;
+        top: 50;
+        left: 50;
+       transform: scale(0);
+        transform: translateY(200%);
+        
+    }
+    25%{
+        transform: scale(1);
+        /* transform: scale(1); */
+        border-radius: 15px;
+        color: black;
+    }
+    75%{
+        transform: scale(1);
+
+        transform: rotate(180deg); 
+        border-radius: 45px;
+        color: rgb(255, 255, 255);
+    }
+    100%{
+        transform: scale(0.75);
+        transform: rotate(360deg);
+        border-radius: 75px;
+        color: rgb(254, 5, 5);
+ 
+    } 
+} 
+
+
+
+

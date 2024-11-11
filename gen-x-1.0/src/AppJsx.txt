@@ -1,0 +1,217 @@
+// import { BrowserRouter, Route, Routes } from "react-router-dom"
+// import MainPageComponent from "./Components/MainPageComponent/MainPageComponents"
+// import TodoCard from "./Components/PagesComponents/TodoPage"
+// import DigitalCard from "./Components/PagesComponents/DigitalWatch"
+// import Navbar from "./Components/NavigationComponent/NavBar"
+// import LoadingSpinner from "./Components/LoadingComponent/LoadingSpinner"
+// import {  useEffect, useState } from "react"
+
+// import { isEnable } from "../src/Components/GlobalComponents"
+// import Footer from "./Components/Footer"
+
+// import Home from "./Components/Home.jsx"
+// import { TextChangerProvider } from "./Components/ContextComp/TextChanger.jsx"
+// import IsTextStyleChanged from "./Components/IsTextChange.jsx"
+// import EncryptPage from "./Components/PasswordIsEncrypt.jsx"
+// import { TextEncryptProvider } from "./Components/ContextComp/textEncrypt.jsx"
+// // import QrCodeGenerator from "./Components/GenerateQrCode/QrCode.jsx"
+// import Counter from "./Components/Redux/Counter.jsx"
+// import TrafficControl from "./Components/Redux/TrafficControl.jsx"
+
+// // import SignUp from "./Components/SignUpComponents/SignUp"
+
+// // import LoginCom from "./Components/LoginComponent/Login"
+
+// // import AuthDetailComp from "./Components/AuthDetailsComponent/AuthDetail"
+
+
+
+
+// function App() {
+//   // const globalDataRead = isEnable()
+
+//   // const [isLoading , setIsloading] = useState(true)
+//   //   useEffect(() => {
+      
+//   //  setTimeout(() => {
+//   //   console.log("after 2 seconds");
+    
+//   //   setIsloading(false)
+//   // }, 2000);
+//   // } ,[]);
+//   return (
+//     <>
+//     {/* <h1>Firebase Authentication </h1> */}
+//     {/* <SignUp/> */}
+//     {/* <LoginCom/> */}
+//     {/* <AuthDetailComp/> */}
+//       {/* <MainPageComponent/> */}
+      
+//       {/* <LoadingSpinner/> */}
+     
+//       {/* <Navbar />
+      
+//       <BrowserRouter>
+//      <Routes>
+//         <Route path="/" element={<MainPageComponent name={"hello"}/>} />
+//         <Route path="/todo" element={<TodoCard />} />
+//         <Route path="/digi" element={<DigitalCard />} />
+//      </Routes>
+//      </BrowserRouter> */}
+//      {/* {globalDataRead.footer ? ( <Footer /> ) : "" } */}
+
+  
+//      {/* {isLoading ? console.log("loading started") : `loading completed ${globalDataRead.loading } , ${globalDataRead.dark}`} */}
+// {/* <TextEncryptProvider>
+  // <EncryptPage/>
+// </TextEncryptProvider> */}
+// {/* <QrCodeGenerator /> */}
+
+// {/* <Counter /> */}
+// <TrafficControl />
+//     </>
+//   )
+// }
+
+// export default App
+
+// App.js
+// App.js
+import React, { useState, useEffect, useContext } from 'react';
+import { BrowserRouter as Router, Routes, Route, useNavigate } from 'react-router-dom';
+// import Form from './Components/EKart/Form';
+
+// import Display from './Components/EKart/Display';
+
+import Tform from "./Components/EKart/TForm"
+import UserInfoPage from "./Components/EKart/UserInfo"
+import ExpensiveComponent from './Components/Memo/UseMemo';
+import UseRefComp from './Components/Ref/UserRef';
+import Form_Anime from './Fan_Anime/Fan_Anime_Form';
+import Loading from './Fan_Anime/Loading';
+import SignUpPage from './Fan_Anime/AnimeSinUp';
+import AnimeLoginPage from './Fan_Anime/AnimeLogin';
+import Welcome from './Fan_Anime/WelcomePage';
+// import { LoadingContext, LoadingProvider } from './Components/ContextComp/isLoadingCreateContext';
+// import { LoadingProvider } from "./Components/ContextComp/isLoadingCreateContext";
+
+import EncryptPage from './Components/PasswordIsEncrypt';
+import CustNormalButton from './Components/SmallComponents/NormalButtonComp';
+import { LoadingContext } from "./Components/ContextComp/isLoadingCreateContext";
+
+
+
+function App() {
+  const [getUserData, setGetUserData] = useState([]);
+  const [editingUserDetails, setEditingUserDetails] = useState(null);
+  const [isRunning , setIsRunning ] = useState(true)
+  // const [isButton , setIsButton] useState()
+
+  const {isLoading} = useContext(LoadingContext)
+  console.log("@@@ isLoading app" , isLoading );
+  
+  // Load products from localStorage on initial load
+  useEffect(() => {
+    const savedUserDetails = JSON.parse(localStorage.getItem('getUserData')) || [];
+    setGetUserData(savedUserDetails);
+  }, []);
+
+  // Save products to localStorage whenever products change
+  useEffect(() => {
+    localStorage.setItem('getUserData', JSON.stringify(getUserData));
+  }, [getUserData]);
+
+  const addOrUpdateProduct = (userDetail) => {
+    if (editingUserDetails) {
+      // Update existing product
+      const updatedProducts = getUserData.map(p => 
+        // (p.id === editingProduct.id ? product : p)
+        {
+
+          if (p.id === getUserData.id) {
+            console.log("@@@ userDetail" , userDetail);
+            
+            return userDetail
+          }
+          else{
+            console.log("@@@ product with p" , p);
+            return p
+          }
+        }
+      );
+      setGetUserData(updatedProducts);
+    } else {
+      // Add new product with a unique ID
+      setGetUserData([...getUserData, { ...userDetail, id: Date.now() }]);
+    }
+    setEditingUserDetails(null);
+  };
+
+  const deleteProduct = (id) => {
+    const updatedProducts = getUserData.filter(product => product.id !== id);
+    setGetUserData(updatedProducts);
+  };
+
+  const editProduct = (product) => {
+    setEditingUserDetails(product);
+  };
+
+  // useEffect(()=>{
+  //  const timer  = setTimeout(() => {
+  //     setIsRunning(false)
+  //     console.log("@@@ isRunning" , isRunning);
+  //     // basicall this is the main this to increase the loading time
+  //   }, 10000 );
+
+  //   () => clearTimeout(timer )
+  // }, [])
+
+  return (
+    // <Router>
+    //   <Routes>
+    //     <Route
+    //       path="/"
+    //       element={
+    //         <Tform
+    //           onSubmit={addOrUpdateProduct}
+    //           UserInitialData={editingUserDetails}
+    //         />
+    //       }
+    //     />
+    //     <Route
+    //       path="/display"
+    //       element={
+    //         <UserInfoPage
+    //         userInfo={getUserData}
+    //           onDelete={deleteProduct}
+    //           onEdit={editProduct}
+    //         />
+    //       }
+    //     />
+    //   </Routes>
+    // </Router>
+    <>
+      {/* <ExpensiveComponent/> */}
+      {/* <UseRefComp /> */}
+      {/* <Form_Anime /> */}
+      {/* <AnimeLoginPage/> */}
+      {/* <SignUpPage/> */}
+
+      {/* <Loading isLoaded={isRunning} /> */}
+      {/* <LoadingProvider> */}
+      {/* <LoadingProvider> */}
+      {
+        isLoading === false ?
+      ( < CustNormalButton /> ) : ( <Loading isLoading={isLoading}/> )
+      }
+      {/* </LoadingProvider> */}
+
+     {/* <Welcome /> */}
+      {/* </LoadingProvider> */}
+
+
+    </>
+  );
+}
+
+export default App;
